@@ -7,7 +7,9 @@ class EvaluateTest extends munit.FunSuite {
     assertEquals(Evaluate.evaluate("20 - 8"), 12)
   }
 
-  test("Evaluate should respect operator precedence (multiplication before addition)") {
+  test(
+    "Evaluate should respect operator precedence (multiplication before addition)"
+  ) {
     // 2 + 3 * 4 should be 14, not 20
     assertEquals(Evaluate.evaluate("2 + 3 * 4"), 14)
   }

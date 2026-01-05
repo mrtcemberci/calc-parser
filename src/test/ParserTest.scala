@@ -2,12 +2,12 @@ package calc
 
 class ParserTest extends munit.FunSuite {
 
-  def parse(input: String): Either[String, Expr] = 
+  def parse(input: String): Either[String, Expr] =
     Parser.parse(Lexer.tokenize(input))
 
   test("Parser handles simple addition") {
     assertEquals(
-      parse("1 + 2"), 
+      parse("1 + 2"),
       Right(Add(Literal(1), Literal(2)))
     )
   }

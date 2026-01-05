@@ -17,8 +17,15 @@ class LexerTest extends munit.FunSuite {
   test("Lexer should handle all operators and parentheses") {
     val input = "(10 * 2) / 5 - 3"
     val expected = List(
-      LParen, Num(10), Times, Num(2), RParen, 
-      Divide, Num(5), Minus, Num(3)
+      LParen,
+      Num(10),
+      Times,
+      Num(2),
+      RParen,
+      Divide,
+      Num(5),
+      Minus,
+      Num(3)
     )
     assertEquals(Lexer.tokenize(input), expected)
   }
