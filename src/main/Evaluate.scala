@@ -1,5 +1,9 @@
 package calc
 
+import parsley.Result
+import parsley.Success
+import parsley.Failure
+
 object Evaluate {
 
   private def evaluate(input: Expr): Int = input match {
@@ -16,6 +20,12 @@ object Evaluate {
       case Left(message) => sys.error(s"Evaluation Error: $message")
       case Right(ast)    => evaluate(ast)
     }
+  }
 
+  def evaluateParsley(input: String): Int = {
+    ParsleyParser.parser.parse(input) match {
+      case Success(ast)   => evaluate(ast)
+      case Failure(error) => sys.error(s"Parsley Evaluation Error: $error")
+    }
   }
 }

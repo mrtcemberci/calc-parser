@@ -1,5 +1,11 @@
 package calc
 
+import parsley.Parsley
+import parsley.Parsley.{eof, many}
+import parsley.character.{digit, char, whitespace}
+import parsley.expr.{precedence, Ops, InfixL, Prefix}
+import parsley.syntax.character.charLift
+
 object Parser {
   type Result[A] = (List[Token], Either[String, A])
 
@@ -87,4 +93,24 @@ object Parser {
     case Nil =>
       (Nil, Left("Unexpected end of input: expected a value or '('"))
   }
+}
+
+object ParsleyParser {
+
+  private def lexeme[A](p: Parsley[A]): Parsley[A] = p <* many(whitespace)
+
+  private val number = lexeme(
+    digit.foldLeft1[Int](0)((n, d) => n * 10 + d.asDigit)
+  ).map(Literal.apply)
+
+  private lazy val atom: Parsley[Expr] =
+    lexeme(char('(')) *> expr <* lexeme(char(')')) | number
+
+  private lazy val expr: Parsley[Expr] = precedence[Expr](atom)(
+    Ops(Prefix)(lexeme(char('-')) #> Neg.apply),
+    Ops(InfixL)(lexeme(char('*')) #> Mul.apply, lexeme(char('/')) #> Div.apply),
+    Ops(InfixL)(lexeme(char('+')) #> Add.apply, lexeme(char('-')) #> Sub.apply)
+  )
+
+  val parser: Parsley[Expr] = many(whitespace) *> expr <* eof
 }
