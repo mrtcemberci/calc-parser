@@ -29,7 +29,7 @@ object Lexer:
                             case "+" => Plus
                             case "-" => Minus
                             case "*" => Times
-                            case "/" => Div
+                            case "/" => Divide
                             case "(" => LParen
                             case ")" => RParen
                         loop(remaining.substring(matchStr.length), token :: acc)
